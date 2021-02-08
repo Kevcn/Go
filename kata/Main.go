@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
+	"unicode"
 )
 
 func main() {
@@ -64,5 +65,32 @@ func PrinterError(s string) string {
 		}
 	}
 
+	// Sprintf to print with vairables
 	return fmt.Sprintf("%d/%d", count, length)
+}
+
+func Capitalize(st string) []string {
+
+	evenIndex := true
+
+	var evenSB strings.Builder
+	var oddSB strings.Builder
+
+	for i := 0; i < len(st); i++ {
+		if evenIndex {
+			convertCharToUpperCase := unicode.ToUpper(rune(st[i]))
+			evenSB.WriteString(string(convertCharToUpperCase))
+			oddSB.WriteString(string(st[i]))
+
+			evenIndex = false
+		} else {
+			convertCharToUpperCase := unicode.ToUpper(rune(st[i]))
+			oddSB.WriteString(string(convertCharToUpperCase))
+			evenSB.WriteString(string(st[i]))
+
+			evenIndex = true
+		}
+	}
+
+	return []string{evenSB.String(), oddSB.String()}
 }
