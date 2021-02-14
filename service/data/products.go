@@ -5,44 +5,37 @@ import (
 	"io"
 )
 
-// Product defines the structure for an API product
-// swagger:model
 type Product struct {
-	// the id for the product
-	//
-	// required: false
-	// min: 1
-	ID int `json:"id"` // Unique identifier for the product
-
-	// the name for this poduct
-	//
-	// required: true
-	// max length: 255
-	Name string `json:"name" validate:"required"`
-
-	// the description for this poduct
-	//
-	// required: false
-	// max length: 10000
-	Description string `json:"description"`
-
-	// the price for the product
-	//
-	// required: true
-	// min: 0.01
-	Price float64 `json:"price" validate:"required,gt=0"`
-
-	// the SKU for the product
-	//
-	// required: true
-	// pattern: [a-z]+-[a-z]+-[a-z]+
-	SKU string `json:"sku" validate:"sku"`
+	ID          int64   `json:"id"`
+	Name        string  `json:"name" validate:"required"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price" validate:"required,gt=0"`
+	SKU         string  `json:"sku" validate:"sku"`
 }
 
 func GetProducts() Products {
 	return productList
 }
 
+// --- For post endpoint ---
+func (p *Product) FromJSON(r io.Reader) error {
+	e := json.NewDecoder(r)
+	// throws error if fail to decode the input
+	return e.Decode(p)
+}
+
+func AddProduct(p *Product) {
+	p.ID = getNextID()
+	// not very nice way of adding an element...hmmm
+	productList = append(productList, p)
+}
+
+func getNextID() int64 {
+	lp := productList[len(productList)-1]
+	return lp.ID + 1
+}
+
+// --- For get endpoint ---
 // Custom type so we can have a method on it
 type Products []*Product
 
