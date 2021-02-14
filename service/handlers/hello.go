@@ -16,6 +16,7 @@ func NewHello(l *log.Logger) *Hello {
 }
 
 // This is an extension on the hello struct? 	// struct is referenced with a struct
+// The 'ServeHTTP' is a method that operates on the struct Hello
 func (h *Hello) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	h.l.Println("Hello World")
 

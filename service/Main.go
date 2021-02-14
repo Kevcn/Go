@@ -13,7 +13,7 @@ import (
 
 func main() {
 
-	/// Lesson 1
+	/// --------- Lesson 1 ---------
 
 	// // register a path to the server MUX (Multiplexer that select which handler handles a HTTP request)
 	// http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
@@ -28,12 +28,14 @@ func main() {
 	// Start and listen the server on a port
 	// http.ListenAndServe(":8080", nil)
 
-	l := log.New(os.Stdout, "product-api", log.LstdFlags)
-	hh := handlers.NewHello(l)
+	/// --------- Lesson 2 ---------
 
-	// Create our own server multiplexer
+	l := log.New(os.Stdout, "product-api", log.LstdFlags)
+	ph := handlers.NewProduct(l)
+
+	// Create our own Server Multiplexer
 	sm := http.NewServeMux()
-	sm.Handle("/", hh)
+	sm.Handle("/", ph)
 
 	// Create a server with timeouts to prevent attacks
 	s := &http.Server{
